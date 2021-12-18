@@ -71,7 +71,6 @@ class Home extends StatelessWidget {
                       nombreImagen:
                           'c7f0aa05919c2469c5d01411250faaef590da9e9.png'),
                   SizedBox(height: 30.0),
-
                 ],
               ),
             ],

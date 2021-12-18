@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:latestsy/Controllers/estado_controller.dart';
 import 'package:latestsy/Controllers/tema_controllers.dart';
