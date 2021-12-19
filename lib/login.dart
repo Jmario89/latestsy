@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Login extends StatelessWidget {
+  //Inicializacion de firebase
+  final Future<FirebaseApp> _firebaseApp = Firebase.initializeApp();
 
-  const Login({Key? key}) : super(key: key);
+  Login({Key? key}) : super(key: key);
 
   @override
-
   Widget build(BuildContext context) {
-
     final logo = Hero(
       tag: 'hero',
       child: CircleAvatar(
@@ -58,7 +59,7 @@ class Login extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-           Navigator.pushNamed(context, 'home');
+          Navigator.pushNamed(context, 'home');
         },
         padding: EdgeInsets.all(22),
         color: Colors.deepOrange,
@@ -74,33 +75,44 @@ class Login extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         onPressed: () {
-           Navigator.pushNamed(context, 'registarse');
+          Navigator.pushNamed(context, 'registarse');
         },
         padding: EdgeInsets.all(12),
         color: Colors.deepOrange,
-        child: Text('Crear cuenta nueva', style: TextStyle(color: Colors.white)),
+        child:
+            Text('Crear cuenta nueva', style: TextStyle(color: Colors.white)),
       ),
     );
 
     return Scaffold(
       backgroundColor: Colors.white, //COLOCAMOS EL COLOR DEL FONDO
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            logo,
-            SizedBox(height: 48.0),
-            email,
-            SizedBox(height: 8.0),
-            password,
-            SizedBox(height: 24.0),
-            loginButton,
-            SizedBox(height: 3.0),
-            loginButtonCrear
-          ],
-        ),
-      ),
+      body: FutureBuilder(
+          future: _firebaseApp,
+          builder: (context, snap) {
+            if (snap.hasError) {
+              return Text('Error en Firebase: ${snap.error.toString()}');
+            } else if (snap.connectionState == ConnectionState.done) {
+              return Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(left: 24.0, right: 24.0),
+                  children: <Widget>[
+                    logo,
+                    SizedBox(height: 48.0),
+                    email,
+                    SizedBox(height: 8.0),
+                    password,
+                    SizedBox(height: 24.0),
+                    loginButton,
+                    SizedBox(height: 3.0),
+                    loginButtonCrear
+                  ],
+                ),
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          }),
     );
   }
 }
